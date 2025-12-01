@@ -1,0 +1,15 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    additionalArguments:
+      - "--api"
+      - "--api.dashboard=true"
+      - "--api.insecure=true" # do not use in production, only for home lab
+    ports: # expose the port as a service or use port-forward for more secure access, only for home lab
+      traefik:
+        expose:
+          default: true
