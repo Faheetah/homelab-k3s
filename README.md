@@ -1,6 +1,6 @@
-# Setup server
+# Setup Server
 
-*Note: this install process mirrors the script executable from `https://get.k3s.io/`, it is included as explicit steps to demonstrate the full install process. For other installations such as node setup, use the get.k3s.io script.*
+*Note: this install process mirrors the script executable from `https://get.k3s.io/` noted in the k3s quick start[^1], it is included as explicit steps to demonstrate the full install process. For other installations such as node setup, use the get.k3s.io script.*
 
 ## Install k3s
 
@@ -70,7 +70,7 @@ sudo ln -fs /usr/local/bin/k3s /usr/local/bin/ctr
 
 # Setup kubectl
 
-kubectl can be installed anywhere to interact with the cluster, such as a personal workstation.
+kubectl can be installed anywhere to interact with the cluster, such as a personal workstation[^2].
 
 ```bash
 sudo wget -O /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -103,8 +103,13 @@ tls-san:
   - "myserverfqdn"
 ```
 
+## Manifest Issues
+
+Ensure the correct apiVersion[^3] is being used for the resource. Also ensure label/selector keys appropriately match between resources.
+
 # References
 
-- **https://docs.k3s.io/quick-start** - documentation for installing k3s
-- **https://docs.k3s.io/cluster-access** - setup an external system to interact with the cluster
-- **https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html** - helpful guide for api versions
+
+[^1]: k3s quick start: https://docs.k3s.io/quick-start
+[^2]: external cluster access: https://docs.k3s.io/cluster-access
+[^3]: API version guide: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
