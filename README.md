@@ -92,11 +92,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetok
 
 ## Certificate Errors for kubectl
 
-k3s will setup certificates using the system hostname.
-
-https://github.com/k3s-io/k3s/discussions/9436
-
-To add additional SANs to the cerficiate, add the following to `/etc/rancher/k3s/config.yaml` (not k3s.yaml).
+k3s will setup certificates using the system hostname[^3]. To add additional SANs to the cerficiate, add the following to `/etc/rancher/k3s/config.yaml` (not k3s.yaml).
 
 ```yaml
 tls-san:
@@ -105,11 +101,12 @@ tls-san:
 
 ## Manifest Issues
 
-Ensure the correct apiVersion[^3] is being used for the resource. Also ensure label/selector keys appropriately match between resources.
+Ensure the correct apiVersion[^4] is being used for the resource. Also ensure label/selector keys appropriately match between resources.
 
 # References
 
 
 [^1]: k3s quick start: https://docs.k3s.io/quick-start
 [^2]: external cluster access: https://docs.k3s.io/cluster-access
-[^3]: API version guide: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+[^3]: https://github.com/k3s-io/k3s/discussions/9436
+[^4]: API version guide: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
