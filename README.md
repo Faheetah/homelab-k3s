@@ -16,9 +16,10 @@ Uncomment `net.ipv4.ip_forward=1` in `/etc/sysctl.conf` then run `sudo sysctl --
 
 ## Add to systemd
 
-Add the following to `/etc/systemd/system/k3s.service`.
+Create the systemd service file.
 
-```text
+<sub>/etc/systemd/system/k3s.service</sub>
+```ini
 [Unit]
 Description=Lightweight Kubernetes
 Documentation=https://k3s.io
@@ -52,7 +53,7 @@ ExecStart=/usr/local/bin/k3s server
 
 Enable and start k3s server.
 
-```
+```bash
 sudo systemctl enable k3s
 sudo systemctl start k3s
 ```
@@ -61,12 +62,13 @@ sudo systemctl start k3s
 
 k3s uses $0 to determine the executing binary path, which lets it interpret a symlink for kubectl as running the kubectl command. Also setup bash completion for kubectl. crictl also has bash completion, but ctr does not.
 
-```
+```bash
 sudo ln -fs /usr/local/bin/k3s /usr/local/bin/kubectl
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
 sudo ln -fs /usr/local/bin/k3s /usr/local/bin/crictl
 sudo ln -fs /usr/local/bin/k3s /usr/local/bin/ctr
 ```
+
 
 # Setup kubectl
 
@@ -80,6 +82,7 @@ kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
 
 Copy the `/etc/rancher/k3s/k3s.yaml` file from the node controller to the local machine at ~/.kube/config, replacing the `clusters[0].cluser.server` section with the remote node's URL. It is advised to ensure the permissions for the folder and config file be restricted only to the local user with 0600.
 
+
 # Install Agent Nodes (optional)
 
 Get the node token from `/var/lib/rancher/k3s/server/node-token` on the control node. Run the get.k3s.io install script on the agent using the node token from the control node and the address of the control node API endpoint.
@@ -88,12 +91,14 @@ Get the node token from `/var/lib/rancher/k3s/server/node-token` on the control 
 curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
 ```
 
+
 # Troubleshooting
 
 ## Certificate Errors for kubectl
 
-k3s will setup certificates using the system hostname[^3]. To add additional SANs to the cerficiate, add the following to `/etc/rancher/k3s/config.yaml` (not k3s.yaml).
+k3s will setup certificates using the system hostname[^3]. To add additional SANs to the cerficiate, add the following to *config.yaml* (not *k3s.yaml*).
 
+<sub>/etc/rancher/k3s/config.yaml</sub>
 ```yaml
 tls-san:
   - "myserverfqdn"
@@ -103,10 +108,13 @@ tls-san:
 
 Ensure the correct apiVersion[^4] is being used for the resource. Also ensure label/selector keys appropriately match between resources.
 
+
 # References
 
-
 [^1]: k3s quick start: https://docs.k3s.io/quick-start
+
 [^2]: external cluster access: https://docs.k3s.io/cluster-access
+
 [^3]: https://github.com/k3s-io/k3s/discussions/9436
+
 [^4]: API version guide: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
